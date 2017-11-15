@@ -23,7 +23,7 @@
     "hat": "0.0.3",
     "inquirer": "^3.3.0",
     "inquirer-recursive": "0.0.5",
-    "jsonfile": "^4.0.0",
+    "jsonfile-commentless": "^1.0.0",
     "mocha": "^4.0.1",
     "mongodb": "^2.2.33",
     "node-cache": "^4.1.1",
