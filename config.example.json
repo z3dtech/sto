@@ -17,7 +17,8 @@
                                   "LIMIT_WRITE": {
                                       "LIMIT_BY": "api_key", 
                                       "HOUR": 100,
-                                      "DAY": 500
+                                      "DAY": 500,
+                                      "SIZE": 256
                                     },
                                     "LIMIT_READ": {
                                       "LIMIT_BY": "api_key", 

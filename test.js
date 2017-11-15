@@ -3,7 +3,7 @@
 
 const request				 = require('request');
 const expect 		 		 = require('chai').expect
-const jsonfile				 = require('jsonfile')
+const jsonfile				 = require('jsonfile-commentless')
 const Constants 	 		 = require('./lib/Consts')
 const HandleConfig			 = require('./lib/HandleConfig')
 const HandleError 			 = require('./lib/HandleError')
