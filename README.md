@@ -99,3 +99,11 @@ Build standardized clients<br />
 * Sequelize for relational dbs (PostGres, MySQl, etc.)
 * DynamoDB, Cassandra, Aurora											
 * Travis CI / Automated Build Checks
+
+# License
+
+[MIT]
+
+Copyright 2017 z3dtech 
+
+If you take my code and modify it without giving me credit, I will hunt you down, read through your code, adopt changes I like, and thank you for your efforts. You've been warned.
