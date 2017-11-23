@@ -1,0 +1,38 @@
+{
+  "DB": "mongo",
+  "MONGO": "mongodb://admin:admin@localhost:27017/sto__db",
+  "DEFAULT_COLLECTION": "sto__data",
+  "PORT": 8080,
+  "SSL_ENABLED": false,
+  "SSL_CERT": "./path2/cert/goes/here.crt",
+  "SSL_KEY": "./path2/key/goes/here.pem",
+  "SSL_PORT": 443,
+  "API_AUTH_ENABLED": true,
+  "LIMITS_ENABLED": true,
+  "API_AUTH_KEYS": {
+                    "testkey": { 
+                                  "READ": true,
+                                  "WRITE": true,
+                                  "DELETE": true,
+                                  "LIMIT_WRITE": {
+                                      "LIMIT_BY": "api_key", 
+                                      "HOUR": 100,
+                                      "DAY": 100,
+                                      "SIZE": 256
+                                    },
+                                    "LIMIT_READ": {
+                                      "LIMIT_BY": "api_key", 
+                                      "HOUR": 100,
+                                      "DAY": 100
+                                    },
+                                    "COLLECTIONS" : {
+                                      "testdbonly": true
+                                    }
+                                }
+                    },
+  "CACHE_ENABLED": true,
+  "CACHE_TTL": 600,
+  "LOGGING_ENABLED": true,
+  "LOGGING_COLLECTION": "sto__logs",
+  "STORE_DUPLICATES": false
+}

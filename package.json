@@ -1,0 +1,39 @@
+{
+  "name": "sto",
+  "version": "1.0.17",
+  "description": "Simplest possible RESTFUL storage API",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z3dtech/sto.git"
+  },
+  "bin": {
+    "sto": "./cli.js"
+  },
+  "author": "z3d",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/z3dtech/sto/issues"
+  },
+  "homepage": "https://github.com/z3dtech/sto#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "hat": "0.0.3",
+    "inquirer": "^3.3.0",
+    "inquirer-recursive": "0.0.5",
+    "isobject": "^3.0.1",
+    "jsonfile-commentless": "^1.0.0",
+    "mocha": "^4.0.1",
+    "mongodb": "^2.2.33",
+    "node-cache": "^4.1.1",
+    "object-hash": "^1.2.0",
+    "object-sizeof": "^1.2.0",
+    "request": "^2.83.0",
+    "yargs": "^9.0.1"
+  }
+}
