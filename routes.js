@@ -1,7 +1,6 @@
 'use strict'
 
 const bodyParser     = require('body-parser')
-const Constants 	 = require('./lib/Consts')
 const HandleError	 = require('./lib/HandleError')
 
 
@@ -24,7 +23,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization ) 
 		apiHandler.handleInsertCall( apiKey, req.body ).then((data) => {
 			res.status(201).send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	});
@@ -47,7 +46,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleDeleteCall( apiKey, req.body ).then((data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	});
@@ -76,7 +75,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -87,7 +86,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ) ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -100,7 +99,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ) ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -142,7 +141,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, 1, false, 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -154,7 +153,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ), false, 1).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -166,7 +165,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ), 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -211,7 +210,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindHashCall(  apiKey, false, req.params.hash ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -234,7 +233,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleCountCall( apiKey, false, false ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -245,7 +244,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleCountCall( apiKey, false, req.params.owner ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -282,7 +281,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -293,7 +292,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ) ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 	
 	})
@@ -304,7 +303,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ) ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -344,7 +343,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, 1, false, 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -355,7 +354,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ), false, 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 	
 	})
@@ -367,7 +366,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ), 1 ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -406,7 +405,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindHashCall(  apiKey, req.params.collection, req.params.hash ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -429,7 +428,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindCountCall( apiKey, req.params.collection, false ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -440,7 +439,7 @@ module.exports = function(app) {
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindCountCall(  apiKey, req.params.collection, req.params.owner ).then( (data) => {
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -462,7 +461,7 @@ module.exports = function(app) {
 
 
 
-	app.use(function (req, res, next) {
+	app.use(function (req, res ) {
 		res.setHeader('Content-Type', 'application/vnd.api+json')
 		let apiHandler = req.app.get( 'apiHandler' )
 		apiHandler.logRequest( 404, 404, 404, '[API] 404 on ' + req.originalUrl )

@@ -1,7 +1,7 @@
 {
-  "DB": "mongo",
-  "MONGO": "mongodb://admin:admin@localhost:27017/sto__db",
-  "DEFAULT_COLLECTION": "sto__data",
+  "DB": "mongo",  // database type
+  "MONGO": "mongodb://admin:admin@localhost:27017/sto__db", // database connection info for mongo
+  "DEFAULT_COLLECTION": "sto__data", 
   "PORT": 8080,
   "SSL_ENABLED": false,
   "SSL_CERT": "./path2/cert/goes/here.crt",
@@ -15,10 +15,10 @@
                                   "WRITE": true,
                                   "DELETE": true,
                                   "LIMIT_WRITE": {
-                                      "LIMIT_BY": "api_key", 
+                                      "LIMIT_BY": "api_key", // can also limit by owner
                                       "HOUR": 100,
                                       "DAY": 100,
-                                      "SIZE": 256
+                                      "SIZE": 256 // size limit of request in bytes
                                     },
                                     "LIMIT_READ": {
                                       "LIMIT_BY": "api_key", 

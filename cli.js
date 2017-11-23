@@ -30,27 +30,26 @@ const setup = function() {
 	return new Promise( ( res, rej ) => {
 		let configHandler = new HandleConfig()
 		inquirer.prompt( configHandler.initialSetup() ).then( (suc) => {
-			configHandler.buildFile( suc ).then( ( suc ) => {
+			configHandler.buildFile( suc ).then( (  ) => {
 				res(true)
-			}, (err) => {
-				HandleError( '[CONFIG] Unable to write config file', true )
+			}).catch( (err) => {
+				rej( HandleError( '[CONFIG] Unable to write config file: ' + err, true ) )
 			})
-		}, (err) => {
-			HandleError( '[CONFIG] Unable to write config file', true )
+		}).catch( (err) => {
+			rej( HandleError( '[CONFIG] Unable to write config file: ' + err, true ) )
 		})
 	})
 }
 
 const fail = function() {
-	console.log( 'FAIL' )
 	process.exit(1)
 }
 
 
 if( args._[0] && args._[0].split('-').join() === 'setup' ) {
-	setup().then((suc) => {
+	setup().then(() => {
 		run()
-	}, (err) => {
+	}).catch(() => {
 		fail()
 	})
 } else {
