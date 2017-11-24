@@ -108,6 +108,7 @@ describe( 'HTTP API Tests', function() {
 					done()
 				})
 	})
+
 	it('Last Call works as expected', function(done) {
 		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner 
 		request({
@@ -326,7 +327,7 @@ describe( 'HTTP API Tests', function() {
 				done()
 			})		
 	})
-
+	
 	// clearLogs for testKey?
 
 	const insertRandom = function( rand = false ) {
