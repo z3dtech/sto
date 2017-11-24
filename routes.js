@@ -267,6 +267,29 @@ module.exports = function(app) {
 		res.status(err.code).send(err.msg)
 	});
 
+	app.get( '/v1/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader('Content-Type', 'application/vnd.api+json')
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
+		apiHandler.handleFindHashCall(  apiKey, false, req.params.hash, req.params.owner_id ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
+			res.send( data )
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
+			res.status(err.code).send(err.msg)
+		})
+	})
+
+	app.use( '/v1/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
+		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
+		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
+		res.status(err.code).send(err.msg)
+	});
+
 	/*
 		READ COUNT
 	*/
@@ -506,6 +529,31 @@ module.exports = function(app) {
 		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
+
+
+	app.get( '/v1/:collection/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader('Content-Type', 'application/vnd.api+json')
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
+		apiHandler.handleFindHashCall( apiKey, req.params.collection, req.params.hash, req.params.owner_id ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
+			res.send( data )
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
+			res.status(err.code).send(err.msg)
+		})
+	})
+
+	app.use( '/v1/:collection/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
+		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
+		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
+		res.status(err.code).send(err.msg)
+	});
+
 
 	/*
 		READ COUNT
