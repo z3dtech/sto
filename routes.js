@@ -23,6 +23,7 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization ) 
 		apiHandler.handleInsertCall( apiKey, req.body ).then((data) => {
+			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, false )
 			res.status(201).send( data )
 		}).catch( (err) => {
 			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
@@ -50,7 +51,7 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleDeleteCall( apiKey, req.body ).then((data) => {
-			apiHandler.logRequest( Constants.read, req.body.owner, apiKey, false )
+			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, false )
 			res.send( data )
 		}).catch( (err) => {
 			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )

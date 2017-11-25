@@ -4,11 +4,14 @@ const express		 = require('express')
 const https 		 = require('https')
 const http 			 = require('http')
 const fs 			 = require('fs')
+const log4js 		 = require('log4js')
 const app			 = express()
-const HandleApi         = require( './lib/HandleApi' ) 
-const HandleConfig      = require('./lib/HandleConfig')
+const HandleApi      = require( './lib/HandleApi' ) 
+const HandleConfig 	 = require('./lib/HandleConfig')
 require( './routes' )(app)
 	
+const success 		 = log4js.getLogger('success')
+
 
 module.exports.run = function( config ) {
 	let handleConfig = new HandleConfig()
@@ -32,7 +35,7 @@ module.exports.run = function( config ) {
 			}).listen(config.PORT);
 		} else {
 			app.listen( config.PORT, () => {
-				//console.log('\n[SUCCESS] Running on ' + config.PORT + '\n')
+				success.info( '[SUCCESS] Running on port ' + config.PORT + '\n' )
 			})
 		}
 	}
