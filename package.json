@@ -1,6 +1,6 @@
 {
   "name": "sto",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Simplest possible RESTFUL storage API",
   "main": "index.js",
   "scripts": {
