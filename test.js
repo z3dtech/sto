@@ -2,19 +2,21 @@
 // Test Config File
 
 const request				 = require('request');
-const expect 		 		 = require('chai').expect
+const expect 				 = require('chai').expect
+const it 					 = require('mocha').it
+const describe 				 = require('mocha').describe
 const jsonfile				 = require('jsonfile-commentless')
-const Constants 	 		 = require('./lib/Consts')
+const Constants				 = require('./lib/Consts')
 const HandleConfig			 = require('./lib/HandleConfig')
-const HandleError 			 = require('./lib/HandleError')
-const configfile 		 	 = './'+Constants.configFileName //__dirname + '/' + Constants.configFileName
+const HandleError			 = require('./lib/HandleError')
+const configfile 			 = './'+Constants.configFileName //__dirname + '/' + Constants.configFileName
 
 const testOwner = 'test'
 const testCollection = 'testdbonly'
 const testApiKey = 'testkey'
 
 describe( 'HTTP API Tests', function() {
-	let port, config, data, hash, hash2
+	let port, config, data, hash, hash2, protocol
 	it('Config File is Readable', function(done) {
 		jsonfile.readFile( configfile, function( err, configRead ) {
 				if( err ) {
@@ -26,7 +28,12 @@ describe( 'HTTP API Tests', function() {
 					expect( handleConfig.errorCheckConfig(configRead) ).to.equal(true)
 					config = configRead
 					port = configRead.PORT
-					done()	
+					if( config.SSL_ENABLED === true) {
+						protocol = 'https'
+					} else {
+						protocol = 'http'
+					}
+					done()
 				}
 			})
 	})
@@ -38,7 +45,7 @@ describe( 'HTTP API Tests', function() {
 
 	it( 'Server is Up', function(done) {
 		request({
-				url: 'http://localhost:' + port + '/'
+				url: protocol + '://localhost:' + port + '/'
 			}, (err,res) => {
 				expect( err ).to.be.a('null')
 				expect( res.statusCode ).to.equal(200)
@@ -51,17 +58,20 @@ describe( 'HTTP API Tests', function() {
 		insertRandom(data.rand).then((suc)=>{
 			hash = suc.data.inserted
 			done()
-		}).catch((err)=>{done()})
-	 });
+		}).catch((err)=>{
+			expect( err ).to.be.a('null')
+			done()
+		})
+	});
 
 
 
 	it('Count should be 1', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
+		let uri = protocol + '://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -76,32 +86,35 @@ describe( 'HTTP API Tests', function() {
 
 	it('Insert Duplicate Data Works as Expected', function(done) {
 		request.post({
-		  headers: {
-		  	'content-type' : 'application/json',
-		  	authorization: "Basic api_key="+testApiKey
-		  },
-		  url:     'http://localhost:' + port + '/v1/insert',
-		  form:    { data: data,
-		  			owner: testOwner,
-		  			collection: testCollection },
-		  json: true
-		}, (err, res) => {
-			if( config.STORE_DUPLICATES === false ) {
-				expect( err ).to.be.a('null')
-				expect( res.body.errors ).to.be.an('array')
-			} else {
-				expect( err ).to.be.a('null')
-				expect( res.body.data.inserted ).to.be.a('string')
-			}
-			done()
-		})
+					headers: {
+						'content-type' : 'application/json',
+						authorization: "Basic api_key="+testApiKey
+					},
+					url: protocol+'://localhost:' + port + '/v1/insert',
+					form: { 
+						data: data,
+						owner: testOwner,
+						collection: testCollection 
+					},
+					json: true
+				}, (err, res) => {
+					if( config.STORE_DUPLICATES === false ) {
+						expect( err ).to.be.a('null')
+						expect( res.body.errors ).to.be.an('array')
+					} else {
+						expect( err ).to.be.a('null')
+						expect( res.body.data.inserted ).to.be.a('string')
+					}
+					done()
+				})
 	})
+
 	it('Last Call works as expected', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner 
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner 
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -115,11 +128,11 @@ describe( 'HTTP API Tests', function() {
 	})
 
 	it('Fetch by hash works as expected', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/hash/' + hash 
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/hash/' + hash 
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -135,20 +148,24 @@ describe( 'HTTP API Tests', function() {
 
 	it('Pagination works as expected', function(done) {
 		insertRandom().then((suc)=>{
+			expect( suc.data.inserted ).to.be.a('string')
 			return insertRandom()
 		}).then((suc)=>{
+			expect( suc.data.inserted ).to.be.a('string')
 			return insertRandom()
 		}).then((suc)=>{
+			expect( suc.data.inserted ).to.be.a('string')
 			return insertRandom()
 		}).then((suc)=>{
+			expect( suc.data.inserted ).to.be.a('string')
 			return insertRandom()
 		}).then((suc)=>{
 			hash2 = suc.data.inserted
-			let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner + '/4/page/1'
+			let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner + '/4/page/1'
 			request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -158,15 +175,19 @@ describe( 'HTTP API Tests', function() {
 				expect( lastBody.data[1].hashData ).to.equal(hash)
 				done()
 			})
+		}).catch((err)=>{
+			expect( err ).to.be.a('null')
+			expect( false ).to.be(true)
+			done()
 		})
 	})
 	
 	it('First call works as expected', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/first/' + testOwner
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/first/' + testOwner
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -179,11 +200,11 @@ describe( 'HTTP API Tests', function() {
 	})
 
 	it('Fetch count works as expected', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -197,13 +218,13 @@ describe( 'HTTP API Tests', function() {
 
 	it('Delete by owner works as expected [includes half second delay]', function(done) {
 		let deleteOwner = { collection: testCollection, owner: testOwner, skip: 1 }
-		let uri = 'http://localhost:' + port + '/v1/delete'
+		let uri = protocol+'://localhost:' + port + '/v1/delete'
 		request.delete({
 			headers: {
-			  	authorization: "Basic api_key="+testApiKey
-			  },
+				authorization: "Basic api_key="+testApiKey
+			},
 			form: deleteOwner,
-		    json: true,
+			json: true,
 			url: uri
 		}, (err,res) => {
 			expect( err ).to.be.a('null')
@@ -218,11 +239,11 @@ describe( 'HTTP API Tests', function() {
 	})
 
 	it('Skip delete works as expected -- only the last inserted value remains', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner 
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner 
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -236,11 +257,11 @@ describe( 'HTTP API Tests', function() {
 
 
 	it('Skip delete works as expected -- count should now be 1', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -253,11 +274,11 @@ describe( 'HTTP API Tests', function() {
 	})
 
 	it('Also count should be 1 regardless of ownership', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/count/'
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/count/'
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -272,13 +293,13 @@ describe( 'HTTP API Tests', function() {
 
 	it('Delete by hash works as expected', function(done) {
 		let deleteHash = { collection: testCollection, hashData: hash2 }
-		let uri = 'http://localhost:' + port + '/v1/delete'
+		let uri = protocol+'://localhost:' + port + '/v1/delete'
 		request.delete({
 			headers: {
-			  	authorization: "Basic api_key="+testApiKey
-			  },
+				authorization: "Basic api_key="+testApiKey
+			},
 			form: deleteHash,
-		    json: true,
+			json: true,
 			url: uri
 		}, (err,res) => {
 			expect( err ).to.be.a('null')
@@ -291,11 +312,11 @@ describe( 'HTTP API Tests', function() {
 
 
 	it('Empty table -- count should be 0', function(done) {
-		let uri = 'http://localhost:' + port + '/v1/' + testCollection + '/count/' +testOwner
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/count/' +testOwner
 		request({
 				headers: {
-				  	authorization: "Basic api_key="+testApiKey
-				  },
+					authorization: "Basic api_key="+testApiKey
+				},
 				url: uri,
 				json: true
 			}, (err,res) => {
@@ -306,10 +327,8 @@ describe( 'HTTP API Tests', function() {
 				done()
 			})		
 	})
-
-
-
-	// clearLogs for testKey
+	
+	// clearLogs for testKey?
 
 	const insertRandom = function( rand = false ) {
 		if( !rand ) {
@@ -318,15 +337,17 @@ describe( 'HTTP API Tests', function() {
 		data = {rand:rand}
 		return new Promise( ( resolve, reject) => {
 			request.post({
-				  headers: {
-				  	'content-type' : 'application/json',
-				  	authorization: "Basic api_key="+testApiKey
-				  },
-				  url:     'http://localhost:' + port + '/v1/insert',
-				  form:    { data: data,
-				  			owner: testOwner,
-				  			collection: testCollection },
-				  json: true
+					headers: {
+						'content-type' : 'application/json',
+						authorization: "Basic api_key="+testApiKey
+					},
+					url: protocol+'://localhost:' + port + '/v1/insert',
+					form: { 
+						data: data,
+						owner: testOwner,
+						collection: testCollection 
+					},
+					json: true
 				}, function(err,res) {
 					expect( err ).to.be.a('null')
 					if( err !== null ) {

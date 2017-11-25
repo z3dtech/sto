@@ -1,3 +1,5 @@
 node_modules
 config.json
+logs/warnings.log
+logs/errors.log
 .DS_Store

@@ -1,0 +1,10 @@
+[2017-11-23T14:07:30.796] [ERROR] default - TypeError: Cannot read property 'collection' of undefinedfalse
+[2017-11-23T14:07:30.800] [ERROR] default - Unexpected Promise Rejectionfalse
+[2017-11-23T14:07:30.808] [ERROR] default - Unexpected Promise Rejectionfalse
+[2017-11-23T14:07:30.809] [ERROR] default - Unexpected Promise Rejectionfalse
+[2017-11-23T14:07:35.332] [ERROR] default - [API] No Datafalse
+[2017-11-23T14:07:35.447] [ERROR] default - [DB] No Datafalse
+[2017-11-23T14:07:36.682] [ERROR] default - [API] No Datafalse
+[2017-11-23T14:08:02.909] [ERROR] default - [API] Duplicate data - skipping insert ccebaec144a679e09ff1c86e9aed833a45ac5572false
+[2017-11-23T14:14:17.982] [WARN] default - [API] Duplicate data - skipping insert d59a0a559c2239d52adb601abe1a38d7b4a83eabfalse
+[2017-11-23T14:16:44.216] [WARN] warning - [API] Duplicate data - skipping insert 6a6ade7e66c25a2482e712b7bd8431494d3a18dbfalse

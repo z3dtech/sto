@@ -1,16 +1,17 @@
 'use strict'
 
-const express        = require('express')
+const express		 = require('express')
 const https 		 = require('https')
 const http 			 = require('http')
 const fs 			 = require('fs')
-const app            = express()
+const log4js 		 = require('log4js')
+const app			 = express()
+const HandleApi      = require( './lib/HandleApi' ) 
+const HandleConfig 	 = require('./lib/HandleConfig')
+require( './routes' )(app)
+	
+const success 		 = log4js.getLogger('success')
 
-const routes 		 = require( './routes' )(app)
-const HandleApi 	 = require( './lib/HandleApi' ) 
-const HandleError 	 = require( './lib/HandleError' )
-const HandleConfig	 = require('./lib/HandleConfig')
-const Constants 	 = require( './lib/Consts' )
 
 module.exports.run = function( config ) {
 	let handleConfig = new HandleConfig()
@@ -25,19 +26,18 @@ module.exports.run = function( config ) {
 				next()
 			});
 			https.createServer({
-			    key: fs.readFileSync( config.SSL_KEY ),
-			    cert: fs.readFileSync( config.SSL_CERT )
+				key: fs.readFileSync( config.SSL_KEY ),
+				cert: fs.readFileSync( config.SSL_CERT )
 			}, app).listen( config.SSL_PORT )
 			http.createServer( (req, res) => {
-			    res.writeHead(301, { 'Location': 'https://' + req.headers['host'] + req.url });
-			    res.end();
+				res.writeHead(301, { 'Location': 'https://' + req.headers['host'] + req.url });
+				res.end();
 			}).listen(config.PORT);
 		} else {
 			app.listen( config.PORT, () => {
-				console.log('\n[SUCCESS] Running on ' + config.PORT + '\n')
+				success.info( '[SUCCESS] Running on port ' + config.PORT + '\n' )
 			})
 		}
 	}
 			
 }
-

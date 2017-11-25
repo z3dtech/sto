@@ -4,7 +4,9 @@
   "description": "Simplest possible RESTFUL storage API",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "npm run unit && npm run lint",
+    "lint": "./node_modules/.bin/eslint **/*.js && eslint ./*.js ",
+    "unit": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "inquirer-recursive": "0.0.5",
     "isobject": "^3.0.1",
     "jsonfile-commentless": "^1.0.0",
+    "log4js": "^2.3.12",
     "mocha": "^4.0.1",
     "mongodb": "^2.2.33",
     "node-cache": "^4.1.1",

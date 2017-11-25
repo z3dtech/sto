@@ -1,8 +1,8 @@
 'use strict'
 
 const bodyParser     = require('body-parser')
-const Constants 	 = require('./lib/Consts')
 const HandleError	 = require('./lib/HandleError')
+const Constants 	 = require('./lib/Consts')
 
 
 module.exports = function(app) {
@@ -23,8 +23,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization ) 
 		apiHandler.handleInsertCall( apiKey, req.body ).then((data) => {
+			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, false )
 			res.status(201).send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	});
@@ -33,7 +35,10 @@ module.exports = function(app) {
 	app.use( '/v1/insert', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'POST' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -46,8 +51,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleDeleteCall( apiKey, req.body ).then((data) => {
+			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	});
@@ -55,7 +62,10 @@ module.exports = function(app) {
 	app.use( '/v1/delete/', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'DELETE' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 	
@@ -75,8 +85,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -86,8 +98,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ) ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -99,8 +113,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ) ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -109,14 +125,20 @@ module.exports = function(app) {
 	app.use( '/v1/last/:owner_id', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
 	app.use( '/v1/last/:owner_id/:limit', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -124,7 +146,10 @@ module.exports = function(app) {
 	app.use( '/v1/last/:owner_id/:limit/page/:page', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -141,8 +166,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, 1, false, 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -153,8 +180,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ), false, 1).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -165,8 +194,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, false, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ), 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -176,7 +207,10 @@ module.exports = function(app) {
 	app.use( '/v1/first/:owner_id', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -184,7 +218,10 @@ module.exports = function(app) {
 	app.use( '/v1/first/:owner_id/:limit', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -193,7 +230,10 @@ module.exports = function(app) {
 	app.use( '/v1/first/:owner_id/:limit/page/:page', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -210,8 +250,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindHashCall(  apiKey, false, req.params.hash ).then( (data) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -219,7 +261,33 @@ module.exports = function(app) {
 	app.use( '/v1/hash/:hash', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
+		res.status(err.code).send(err.msg)
+	});
+
+	app.get( '/v1/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader('Content-Type', 'application/vnd.api+json')
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
+		apiHandler.handleFindHashCall(  apiKey, false, req.params.hash, req.params.owner_id ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
+			res.send( data )
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
+			res.status(err.code).send(err.msg)
+		})
+	})
+
+	app.use( '/v1/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
+		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
+		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -233,19 +301,23 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleCountCall( apiKey, false, false ).then( (data) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	})
 
-	app.get( '/v1/count/:owner', (req, res) => {
+	app.get( '/v1/count/:owner_id', (req, res) => {
 		res.setHeader('Content-Type', 'application/vnd.api+json')
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
-		apiHandler.handleCountCall( apiKey, false, req.params.owner ).then( (data) => {
+		apiHandler.handleCountCall( apiKey, false, req.params.owner_id ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -254,14 +326,20 @@ module.exports = function(app) {
 	app.use( '/v1/count/', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
-	app.use( '/v1/count/:owner', (req, res) => {
+	app.use( '/v1/count/:owner_id', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -281,8 +359,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -292,8 +372,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ) ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 	
 	})
@@ -303,8 +385,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ) ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -312,21 +396,30 @@ module.exports = function(app) {
 	app.use( '/v1/:collection/last/:owner_id', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
 	app.use( '/v1/:collection/last/:owner_id/:limit', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
 	app.use( '/v1/:collection/last/:owner_id/:limit/page/:page', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 	
@@ -343,8 +436,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, 1, false, 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -354,8 +449,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ), false, 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 	
 	})
@@ -366,8 +463,10 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindOwnerCall( apiKey, req.params.collection, req.params.owner_id, parseInt( req.params.limit ), parseInt( req.params.page ), 1 ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		}) 
 	})
@@ -376,7 +475,10 @@ module.exports = function(app) {
 	app.use( '/v1/:collection/first/:owner_id', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
@@ -384,14 +486,20 @@ module.exports = function(app) {
 	app.use( '/v1/:collection/first/:owner_id/:limit', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
 	app.use( '/v1/:collection/first/:owner_id/:limit/page/:page', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 	
@@ -404,9 +512,11 @@ module.exports = function(app) {
 		res.setHeader('Content-Type', 'application/vnd.api+json')
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
-		apiHandler.handleFindHashCall(  apiKey, req.params.collection, req.params.hash ).then( (data) => {
+		apiHandler.handleFindHashCall( apiKey, req.params.collection, req.params.hash ).then( (data) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -414,9 +524,37 @@ module.exports = function(app) {
 	app.use( '/v1/:collection/hash/:hash', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
+
+
+	app.get( '/v1/:collection/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader('Content-Type', 'application/vnd.api+json')
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
+		apiHandler.handleFindHashCall( apiKey, req.params.collection, req.params.hash, req.params.owner_id ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
+			res.send( data )
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
+			res.status(err.code).send(err.msg)
+		})
+	})
+
+	app.use( '/v1/:collection/hash/:hash/:owner_id', (req, res) => {
+		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
+		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
+		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
+		res.status(err.code).send(err.msg)
+	});
+
 
 	/*
 		READ COUNT
@@ -428,19 +566,23 @@ module.exports = function(app) {
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
 		apiHandler.handleFindCountCall( apiKey, req.params.collection, false ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	})
 
-	app.get( '/v1/:collection/count/:owner', (req, res) => {
+	app.get( '/v1/:collection/count/:owner_id', (req, res) => {
 		res.setHeader('Content-Type', 'application/vnd.api+json')
 		let apiHandler = req.app.get( 'apiHandler' )
 		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
-		apiHandler.handleFindCountCall(  apiKey, req.params.collection, req.params.owner ).then( (data) => {
+		apiHandler.handleFindCountCall(  apiKey, req.params.collection, req.params.owner_id ).then( (data) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, false )
 			res.send( data )
-		}, (err) => {
+		}).catch( (err) => {
+			apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 			res.status(err.code).send(err.msg)
 		})
 	})
@@ -448,21 +590,27 @@ module.exports = function(app) {
 	app.use( '/v1/:collection/count/', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
 
-	app.use( '/v1/:collection/count/:owner', (req, res) => {
+	app.use( '/v1/:collection/count/:owner_id', (req, res) => {
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 		res.setHeader( 'Allow', 'GET' )	
+		let apiHandler = req.app.get( 'apiHandler' )
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
 		let err = HandleError( '[API] Improper Method Used', false, 405 )
+		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	});
 
 
 
-	app.use(function (req, res, next) {
+	app.use(function (req, res ) {
 		res.setHeader('Content-Type', 'application/vnd.api+json')
 		let apiHandler = req.app.get( 'apiHandler' )
 		apiHandler.logRequest( 404, 404, 404, '[API] 404 on ' + req.originalUrl )
