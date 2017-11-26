@@ -146,40 +146,36 @@ describe( 'HTTP API Tests', function() {
 	})
 
 
-	it('Pagination works as expected', function(done) {
-		insertRandom().then((suc)=>{
-			expect( suc.data.inserted ).to.be.a('string')
+	it('Handle 5 sto write calls in <2seconds', function(done) {
+		Promise.all([insertRandom(),insertRandom(),insertRandom(),insertRandom()]).then((suc) => {
+			expect( suc.length ).to.equal(4)
 			return insertRandom()
-		}).then((suc)=>{
-			expect( suc.data.inserted ).to.be.a('string')
-			return insertRandom()
-		}).then((suc)=>{
-			expect( suc.data.inserted ).to.be.a('string')
-			return insertRandom()
-		}).then((suc)=>{
-			expect( suc.data.inserted ).to.be.a('string')
-			return insertRandom()
-		}).then((suc)=>{
+		}).then((suc) => {
 			hash2 = suc.data.inserted
-			let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner + '/4/page/1'
-			request({
-				headers: {
-					authorization: "Basic api_key="+testApiKey
-				},
-				url: uri,
-				json: true
-			}, (err,res) => {
-				expect( err ).to.be.a('null')
-				expect( res.statusCode ).to.equal(200)
-				let lastBody = res.body
-				expect( lastBody.data[1].hashData ).to.equal(hash)
-				done()
-			})
+			done()
 		}).catch((err)=>{
 			expect( err ).to.be.a('null')
 			expect( false ).to.be(true)
 			done()
 		})
+	})
+
+	it('Pagination works as expected', function(done) {
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner + '/4/page/1'
+		request({
+			headers: {
+				authorization: "Basic api_key="+testApiKey
+			},
+			url: uri,
+			json: true
+		}, (err,res) => {
+			expect( err ).to.be.a('null')
+			expect( res.statusCode ).to.equal(200)
+			let lastBody = res.body
+			expect( lastBody.data[1].hashData ).to.equal(hash)
+			done()
+		})
+
 	})
 	
 	it('First call works as expected', function(done) {

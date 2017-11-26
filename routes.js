@@ -610,10 +610,12 @@ module.exports = function(app) {
 
 
 
-	app.use(function (req, res ) {
-		res.setHeader('Content-Type', 'application/vnd.api+json')
+	app.use(( req, res ) => { // 404 everything else
+		res.setHeader( 'Content-Type', 'application/vnd.api+json' )
 		let apiHandler = req.app.get( 'apiHandler' )
-		apiHandler.logRequest( 404, 404, 404, '[API] 404 on ' + req.originalUrl )
-		res.status(404).send({Error: '[API] Path does not exist'})
+		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
+		let err = HandleError( '[API] Path does not exist', false, 404 )
+		apiHandler.logRequest( err.code, err.code, apiKey, err.msg )
+		res.status(err.code).send(err.msg)
 	})
 };
