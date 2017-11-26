@@ -1,38 +1,39 @@
-{
-  "DB": "mongo",  // database type
+{ // do not break this file. it is used as the skeleton to build your config in setup.
+  "DB": "mongo",  // database type, currently only mongo is supported
   "MONGO": "mongodb://admin:admin@localhost:27017/sto__db", // database connection info for mongo
-  "DEFAULT_COLLECTION": "sto__data", 
-  "PORT": 8080,
-  "SSL_ENABLED": false,
-  "SSL_CERT": "./path2/cert/goes/here.crt",
-  "SSL_KEY": "./path2/key/goes/here.pem",
-  "SSL_PORT": 443,
-  "API_AUTH_ENABLED": true,
-  "LIMITS_ENABLED": true,
+  "DEFAULT_COLLECTION": "sto__data", // if no table/collection is included in a request, it is dropped here
+  "PORT": 8080, // port to run HTTP api on (no SSL)
+  "SSL_ENABLED": false, // if SSL is enabled, set this to true. will force all http requests to https
+  "SSL_CERT": "./path2/cert/goes/here.crt", // self 
+  "SSL_KEY": "./path2/key/goes/here.pem", // explanatory
+  "SSL_PORT": 443, // port to connect to for https
+  "API_AUTH_ENABLED": true, // are api keys required?
+  "LIMITS_ENABLED": true, // should api limits be enforced? 
   "API_AUTH_KEYS": {
-                    "testkey": { 
-                                  "READ": true,
-                                  "WRITE": true,
-                                  "DELETE": true,
-                                  "LIMIT_WRITE": {
+                    "testkey": {  // testkey is an api key
+                                  "READ": true, //key can read 
+                                  "WRITE": true, // key can write
+                                  "DELETE": true, // key can delete
+                                  "LIMIT_WRITE": { // write limits (deletes are treated as writes)
                                       "LIMIT_BY": "api_key", // can also limit by owner
-                                      "HOUR": 100,
-                                      "DAY": 100,
+                                      "HOUR": 100, // 100 per hour
+                                      "DAY": 1000, // 1000 per day
                                       "SIZE": 256 // size limit of request in bytes
                                     },
                                     "LIMIT_READ": {
                                       "LIMIT_BY": "api_key", 
-                                      "HOUR": 100,
-                                      "DAY": 100
+                                      "HOUR": 500, // 500 per hour
+                                      "DAY": 5000, // 5000 per day
+                                      "MONTH": -1 // Unlimited per month
                                     },
-                                    "COLLECTIONS" : {
+                                    "COLLECTIONS" : { // testkey can only read the testdbonly collection
                                       "testdbonly": true
                                     }
                                 }
                     },
-  "CACHE_ENABLED": true,
-  "CACHE_TTL": 600,
-  "LOGGING_ENABLED": true,
-  "LOGGING_COLLECTION": "sto__logs",
-  "STORE_DUPLICATES": false
+  "CACHE_ENABLED": true, // cache setup
+  "CACHE_TTL": 600, // cache default stores for 
+  "LOGGING_ENABLED": true, // enables logging of all requests to a table/collection
+  "LOGGING_COLLECTION": "sto__logs", //  the table/collection where logs will be stored
+  "STORE_DUPLICATES": false // allow/disallow insert that is identical to last insert for a collection+owner  
 }
