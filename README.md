@@ -17,12 +17,10 @@ sto setup
 Note: `sto setup` will build a config.json file which you can edit directly. <br />More details on what you can do with it are provided in example.config.json in this repo. Do not edit the example.config.json.
 <br /><br />
 To run 
-
 ```
 sto 
 ```
-<br /><br />
-To run in perpetuity -- (with nohup or forever). A proper build process is in the works.
+To run in perpetuity -- (incorporate `nohup` or `forever start` per your preference). A proper build process is in the works.
 
 ```
 sto & > output.log
@@ -59,12 +57,25 @@ http(s)://[your-server-here]/v1/[collection]/last/[owner]/5
 
 ```
 
-**Fetch page 2 of inputs split by 5**
+**Fetch page 2 of inputs split by 5 (newest first)**
 ```
 GET
 http(s)://[your-server-here]/v1/[collection]/last/[owner]/5/page/1
 # 0 indexed pages
+```
 
+**Fetch first 5 inputs**
+```
+GET
+http(s)://[your-server-here]/v1/[collection]/first/[owner]/5
+
+```
+
+**Fetch page 2 of inputs split by 5 (oldest first)**
+```
+GET
+http(s)://[your-server-here]/v1/[collection]/first/[owner]/5/page/1
+# 0 indexed pages
 ```
 
 **Fetch by hash (unique to data)**
@@ -72,6 +83,12 @@ http(s)://[your-server-here]/v1/[collection]/last/[owner]/5/page/1
 GET
 http(s)://[your-server-here]/v1/[collection]/hash/[hash]
 
+```
+**Get a total count of data objects stored for a collection/owner**
+```
+GET
+http(s)://[your-server-here]/v1/[collection]/count/[owner]
+#owner is optional 
 ```
 
 **Delete by hash**
@@ -84,8 +101,9 @@ http(s)://[your-server-here]/v1/delete
 **Delete by owner**
 ```
 DELETE
-body: { owner: [owner-here] } 
+body: { owner: [owner-here], skip: [n] } 
 http(s)://[your-server-here]/v1/delete
+#including a skip value will preserver the last n inserts for specified owner
 ```
 
 (**NOTE**: Collection specifications are always optional in these requests. If you do not include a collection, the default will be read from the config file.)
