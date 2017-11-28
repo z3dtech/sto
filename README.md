@@ -139,14 +139,16 @@ Build more standardized clients+wrappers<br />
 
 
 **Planned Integrations**									
-* greenlock-express automated SSL certification with letsencrypt											
-* AWS Lambda / Zapier callbacks														
-* Redis for extended cache															
-* Sequelize for relational dbs (PostGres, MySQl, etc.)
+* greenlock-express automated SSL certification with letsencrypt		
+* AWS Lambda / Zapier callbacks							
+* Redis for extended cache
+* DataLoader for batched requests						
+* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)
+* GraphQL Hookup?
 * express-ws for sockets										
-* Mosca for MQTT																
+* Mosca for MQTT										
 * Travis CI / Automated Build Checks
-* Docker Docker Docker
+* Gulp Grunt Docker builds
 
 # License
 
