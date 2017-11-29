@@ -10,7 +10,7 @@ Basically if you don't want to build a database integration or set up a server+A
 
 ```
 npm init
-npm install sto
+npm install -g sto
 sto setup
 ```
 
