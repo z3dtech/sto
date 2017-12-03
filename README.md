@@ -1,10 +1,10 @@
 # sto
-Generic fully RESTful API for quickly saving and fetching data objects. Does CRD-y things. JSON-API Compliant. Mongo integrated. Node-cache for cache. Express. Ideal for quick, simple, seemless saving and fetching.
+Generic fully RESTful CRUD API for quickly saving and fetching data objects. JSON-API Compliant. Mongo integrated. Node-cache for cache. Express. Ideal for quick, simple, seemless saving and fetching.
 <br /><br />
 
-The purpose of sto is to create a generalized API that can seemlessly log and return JSON data objects. Whether you want somewhere to store and retreive the state of your Javascript app, the data of your IoT device, or the user status of your mobile game, sto provides you with the solution. 
+The purpose of sto is to create a generalized API that can seemlessly log and return JSON data objects. Whether you want somewhere to store and retreive the state of your Javascript app, the data of your IoT device, or the user status of your mobile game, sto provides you with an easy to setup solution. 
 <br /><br />
-Basically if you don't want to build a database integration or set up a server+API yourself, or if you are limited by architectural or network security constraints, just let sto deal with the data for you.
+Basically if you don't want to build a custom database integration or set up a server+API yourself, and your use case is tremendously simple, or if you are limited from direct database interaction by architectural or network security constraints, just set up sto and go.
 
 # How to Install
 
@@ -39,10 +39,25 @@ Make HTTP requests to the following paths. For a more detailed implementation, c
 POST
 body: {collection: [collection], owner: [owner], data: [JSON-data-content]}
 http(s)://[your-server-here]/v1/insert
-returns a hash 
+returns a hash + id
 
 ```
 
+**Update data**
+```
+Put
+body: {collection: [collection], id: [id], data: [JSON-data-content]}
+http(s)://[your-server-here]/v1/update
+returns a hash + id
+
+```
+
+**Fetch by id**
+```
+GET
+http(s)://[your-server-here]/v1/[collection]/id/[id]
+
+```
 **Fetch last input**
 ```
 GET
@@ -91,17 +106,24 @@ http(s)://[your-server-here]/v1/[collection]/count/[owner]
 #owner is optional 
 ```
 
-**Delete by hash**
+**Delete by id **
 ```
 DELETE
-body: { hashData: [hash], owner: [owner] } 
+body: { collection: [collection], id: [id] } 
+http(s)://[your-server-here]/v1/delete
+```
+
+**Delete by hash (with owner-specific option)**
+```
+DELETE
+body: { collection: [collection], hashData: [hash], owner: [owner] } 
 http(s)://[your-server-here]/v1/delete
 ```
 
 **Delete by owner**
 ```
 DELETE
-body: { owner: [owner-here], skip: [n] } 
+body: { collection: [collection], owner: [owner-here], skip: [n] } 
 http(s)://[your-server-here]/v1/delete
 #including a skip value will preserver the last n inserts for specified owner
 ```

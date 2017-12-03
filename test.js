@@ -16,7 +16,7 @@ const testCollection = 'testdbonly'
 const testApiKey = 'testkey'
 
 describe( 'HTTP API Tests', function() {
-	let port, config, data, hash, hash2, protocol
+	let port, config, data, hash, hash2, protocol, id
 	it('Config File is Readable', function(done) {
 		jsonfile.readFile( configfile, function( err, configRead ) {
 				if( err ) {
@@ -56,7 +56,7 @@ describe( 'HTTP API Tests', function() {
 	it('Insert Call Test ', function(done) {
 		data = {rand:Math.random()}
 		insertRandom(data.rand).then((suc)=>{
-			hash = suc.data.inserted
+			hash = suc.data.inserted.hashData
 			done()
 		}).catch((err)=>{
 			expect( err ).to.be.a('null')
@@ -103,7 +103,7 @@ describe( 'HTTP API Tests', function() {
 						expect( res.body.errors ).to.be.an('array')
 					} else {
 						expect( err ).to.be.a('null')
-						expect( res.body.data.inserted ).to.be.a('string')
+						expect( res.body.data.inserted.hashData ).to.be.a('string')
 					}
 					done()
 				})
@@ -151,7 +151,7 @@ describe( 'HTTP API Tests', function() {
 			expect( suc.length ).to.equal(4)
 			return insertRandom()
 		}).then((suc) => {
-			hash2 = suc.data.inserted
+			hash2 = suc.data.inserted.hashData
 			done()
 		}).catch((err)=>{
 			expect( err ).to.be.a('null')
@@ -213,7 +213,7 @@ describe( 'HTTP API Tests', function() {
 	})
 
 	it('Delete by owner works as expected [includes half second delay]', function(done) {
-		let deleteOwner = { collection: testCollection, owner: testOwner, skip: 1 }
+		let deleteOwner = { collection: testCollection, owner: testOwner, skip: 2 }
 		let uri = protocol+'://localhost:' + port + '/v1/delete'
 		request.delete({
 			headers: {
@@ -234,8 +234,8 @@ describe( 'HTTP API Tests', function() {
 		})
 	})
 
-	it('Skip delete works as expected -- only the last inserted value remains', function(done) {
-		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner 
+	it('Skip delete works as expected -- only the last 2 inserted values remains', function(done) {
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner + '/5'
 		request({
 				headers: {
 					authorization: "Basic api_key="+testApiKey
@@ -246,13 +246,16 @@ describe( 'HTTP API Tests', function() {
 				expect( err ).to.be.a('null')
 				expect( res.statusCode ).to.equal(200)
 				let lastBody = res.body
-				expect( lastBody.data.hashData ).to.equal(hash2)
+				expect( lastBody.data.length).to.equal(2)
+				expect( lastBody.data[0].hashData ).to.equal(hash2)
+				id = lastBody.data[1]['_id']
+				hash = lastBody.data[1].hash
 				done()
 			})		
 	})
 
 
-	it('Skip delete works as expected -- count should now be 1', function(done) {
+	it('Skip delete works as expected -- count should now be 2', function(done) {
 		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
 		request({
 				headers: {
@@ -264,10 +267,91 @@ describe( 'HTTP API Tests', function() {
 				expect( err ).to.be.a('null')
 				expect( res.statusCode ).to.equal(200)
 				let count = res.body
-				expect( count.data.count ).to.equal(1)
+				expect( count.data.count ).to.equal(2)
 				done()
 			})		
 	})
+
+
+
+	it('Find by Id works as expected', function(done) {
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/id/' + id 
+		request({
+				headers: {
+					authorization: "Basic api_key="+testApiKey
+				},
+				url: uri,
+				json: true
+			}, (err,res) => {
+				expect( err ).to.be.a('null')
+				expect( res.statusCode ).to.equal(200)
+				let data = res.body
+				expect( data.hashData ).to.equal(hash)
+				done()
+			})	
+	})
+
+	
+	it('Update by id works as expected', function(done) {
+		let data = {rand:37}
+		let uri = protocol+'://localhost:' + port + '/v1/update'
+		request.put({
+				headers: {
+					authorization: "Basic api_key="+testApiKey
+				},
+				form: { 
+						data: data,
+						id: id,
+						collection: testCollection 
+					},
+				url: uri,
+				json: true
+			}, (err,res) => {
+				expect( err ).to.be.a('null')
+				expect( res.statusCode ).to.equal(200)
+				done()
+			})	
+	})
+
+
+	it('Find by Id works as expected again [second update verification]', function(done) {
+		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/id/' + id 
+		request({
+				headers: {
+					authorization: "Basic api_key="+testApiKey
+				},
+				url: uri,
+				json: true
+			}, (err,res) => {
+				expect( err ).to.be.a('null')
+				expect( res.statusCode ).to.equal(200)
+				expect( res.body.data.content.rand ).to.equal('37')
+				done()
+			})		
+	})
+
+	
+	it('Delete by Id should work as expected', function(done) {
+		
+		let deleteId = { collection: testCollection, id: id }
+		let uri = protocol+'://localhost:' + port + '/v1/delete'
+		request.delete({
+			headers: {
+				authorization: "Basic api_key="+testApiKey
+			},
+			form: deleteId,
+			json: true,
+			url: uri
+		}, (err,res) => {
+			expect( err ).to.be.a('null')
+			expect( res.statusCode ).to.equal(200)
+			let deletedBody = res.body
+			expect( deletedBody.data.deleted.id ).to.equal(id)
+			done()
+		})
+	})
+
+
 
 	it('Also count should be 1 regardless of ownership', function(done) {
 		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/count/'
@@ -301,7 +385,7 @@ describe( 'HTTP API Tests', function() {
 			expect( err ).to.be.a('null')
 			expect( res.statusCode ).to.equal(200)
 			let lastBody = res.body
-			expect( lastBody.data[0].deleted ).to.equal(hash2)
+			expect( lastBody.data[0].deleted.hashData ).to.equal(hash2)
 			done()
 		})
 	})
@@ -351,7 +435,8 @@ describe( 'HTTP API Tests', function() {
 					}
 					expect( res.statusCode ).to.equal(201)
 					let body = res.body
-					expect( body.data.inserted ).to.be.a('string')
+					expect( body.data.inserted.hashData ).to.be.a('string')
+					//expect( body.data.inserted.id ).to.be.a('string')
 					resolve(body)
 				})
 		})
