@@ -40,7 +40,6 @@ POST
 body: {collection: [collection], owner: [owner], data: [JSON-data-content]}
 http(s)://[your-server-here]/v1/insert
 returns a hash + id
-
 ```
 
 **Update data**
@@ -49,27 +48,23 @@ Put
 body: {collection: [collection], id: [id], data: [JSON-data-content]}
 http(s)://[your-server-here]/v1/update
 returns a hash + id
-
 ```
 
 **Fetch by id**
 ```
 GET
 http(s)://[your-server-here]/v1/[collection]/id/[id]
-
 ```
 **Fetch last input**
 ```
 GET
 http(s)://[your-server-here]/v1/[collection]/last/[owner]
-
 ```
 
 **Fetch last 5 inputs**
 ```
 GET
 http(s)://[your-server-here]/v1/[collection]/last/[owner]/5
-
 ```
 
 **Fetch page 2 of inputs split by 5 (newest first)**
@@ -83,7 +78,6 @@ http(s)://[your-server-here]/v1/[collection]/last/[owner]/5/page/1
 ```
 GET
 http(s)://[your-server-here]/v1/[collection]/first/[owner]/5
-
 ```
 
 **Fetch page 2 of inputs split by 5 (oldest first)**
@@ -97,8 +91,8 @@ http(s)://[your-server-here]/v1/[collection]/first/[owner]/5/page/1
 ```
 GET
 http(s)://[your-server-here]/v1/[collection]/hash/[hash]
-
 ```
+
 **Get a total count of data objects stored for a collection/owner**
 ```
 GET
@@ -106,7 +100,7 @@ http(s)://[your-server-here]/v1/[collection]/count/[owner]
 #owner is optional 
 ```
 
-**Delete by id **
+**Delete by id**
 ```
 DELETE
 body: { collection: [collection], id: [id] } 
@@ -120,7 +114,7 @@ body: { collection: [collection], hashData: [hash], owner: [owner] }
 http(s)://[your-server-here]/v1/delete
 ```
 
-**Delete by owner**
+**Delete all documents by owner (with skip last n inserts option)**
 ```
 DELETE
 body: { collection: [collection], owner: [owner-here], skip: [n] } 
