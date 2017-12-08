@@ -27,7 +27,6 @@
     "express": "^4.16.2",
     "hat": "0.0.3",
     "inquirer": "^3.3.0",
-    "inquirer-recursive": "0.0.5",
     "isobject": "^3.0.1",
     "jsonfile-commentless": "^1.0.0",
     "log4js": "^2.3.12",
