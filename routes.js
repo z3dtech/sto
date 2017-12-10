@@ -1,6 +1,7 @@
 'use strict'
 
 const bodyParser     = require('body-parser')
+const helmet 		 = require('helmet')
 const HandleError	 = require('./lib/HandleError')
 const Constants 	 = require('./lib/Consts')
 
@@ -9,6 +10,7 @@ module.exports = function(app) {
 
 	app.use(bodyParser.urlencoded({ extended: true }))
 	app.use(bodyParser.json())
+	app.use(helmet())
 
 	app.get( '/', (req, res) => {
 		res.sendStatus(200)

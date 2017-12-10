@@ -26,6 +26,7 @@
     "chai": "^4.1.2",
     "express": "^4.16.2",
     "hat": "0.0.3",
+    "helmet": "^3.9.0",
     "inquirer": "^3.3.0",
     "inquirer-recursive": "0.0.5",
     "isobject": "^3.0.1",
