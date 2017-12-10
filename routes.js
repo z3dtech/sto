@@ -32,15 +32,7 @@ module.exports = function(app) {
 	});
 
 
-	app.use( '/v1/insert', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'POST' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/insert', ( req, res ) => { improperMethod( req, res, 'POST' ) } );
 
 	/* 
 		UPDATE DATA
@@ -60,15 +52,7 @@ module.exports = function(app) {
 	});
 
 
-	app.use( '/v1/update', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'PUT' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/update', ( req, res ) => {  improperMethod( req, res, 'PUT' ) } );
 
 	/* 
 		DELETE DATA 
@@ -87,15 +71,7 @@ module.exports = function(app) {
 		})
 	});
 
-	app.use( '/v1/delete/', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'DELETE' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/delete/', ( req, res ) => { improperMethod( req, res, 'DELETE' ) } );
 	
 	/*
 		READ DEFAULT COLLECTION
@@ -117,15 +93,7 @@ module.exports = function(app) {
 	})
 
 
-	app.use( '/v1/id/:_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/id/:_id', ( req, res ) => { improperMethod( req, res ) } )
 
 
 
@@ -161,8 +129,6 @@ module.exports = function(app) {
 		}) 
 	})
 
-
-
 	app.get( '/v1/last/:owner_id/:limit/page/:page', (req, res) => {
 		res.setHeader('Content-Type', 'application/vnd.api+json')
 		let apiHandler = req.app.get( 'apiHandler' )
@@ -177,36 +143,9 @@ module.exports = function(app) {
 	})
 
 
-	app.use( '/v1/last/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
-
-	app.use( '/v1/last/:owner_id/:limit', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
-
-
-	app.use( '/v1/last/:owner_id/:limit/page/:page', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/last/:owner_id', ( req, res ) => { improperMethod( req, res ) } );
+	app.use( '/v1/last/:owner_id/:limit', ( req, res ) => { improperMethod( req, res ) } );
+	app.use( '/v1/last/:owner_id/:limit/page/:page', ( req, res ) => { improperMethod( req, res ) } );
 
 
 	/*
@@ -259,38 +198,14 @@ module.exports = function(app) {
 
 
 
-	app.use( '/v1/first/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/first/:owner_id', ( req, res ) => { improperMethod( req, res ) } );
 
 
-	app.use( '/v1/first/:owner_id/:limit', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/first/:owner_id/:limit', ( req, res ) => { improperMethod( req, res ) } );
 
 
 
-	app.use( '/v1/first/:owner_id/:limit/page/:page', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/first/:owner_id/:limit/page/:page', ( req, res ) => { improperMethod( req, res ) } );
 
 
 	/*
@@ -336,15 +251,7 @@ module.exports = function(app) {
 		})
 	})
 
-	app.use( '/v1/hash/:hash/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/hash/:hash/:owner_id', ( req, res ) => { improperMethod( req, res ) } );
 
 	/*
 		READ COUNT
@@ -378,25 +285,9 @@ module.exports = function(app) {
 	})
 
 
-	app.use( '/v1/count/', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/count/', ( req, res ) => { improperMethod( req, res ) } );
 
-	app.use( '/v1/count/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/count/:owner_id', ( req, res ) => { improperMethod( req, res ) } );
 
 
 	/*
@@ -417,15 +308,7 @@ module.exports = function(app) {
 	})
 
 
-	app.use( '/v1/:collection/id/:_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params['_id'], apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/id/:_id', ( req, res ) => { improperMethod( req, res ) }  );
 
 
 
@@ -474,35 +357,11 @@ module.exports = function(app) {
 		}) 
 	})
 	
-	app.use( '/v1/:collection/last/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/last/:owner_id', ( req, res ) => { improperMethod( req, res ) } );
 
-	app.use( '/v1/:collection/last/:owner_id/:limit', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/last/:owner_id/:limit', ( req, res ) => { improperMethod( req, res ) } );
 
-	app.use( '/v1/:collection/last/:owner_id/:limit/page/:page', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/last/:owner_id/:limit/page/:page', ( req, res ) => { improperMethod( req, res ) } );
 	
 
 
@@ -553,36 +412,11 @@ module.exports = function(app) {
 	})
 	
 	
-	app.use( '/v1/:collection/first/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/first/:owner_id', ( req, res ) => { improperMethod( req, res ) } );
 
+	app.use( '/v1/:collection/first/:owner_id/:limit', ( req, res ) => { improperMethod( req, res ) } );
 
-	app.use( '/v1/:collection/first/:owner_id/:limit', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
-
-	app.use( '/v1/:collection/first/:owner_id/:limit/page/:page', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/first/:owner_id/:limit/page/:page', ( req, res ) => { improperMethod( req, res ) } );
 	
 	/*
 		READ BY HASH
@@ -602,15 +436,7 @@ module.exports = function(app) {
 		})
 	})
 
-	app.use( '/v1/:collection/hash/:hash', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/hash/:hash', ( req, res ) => { improperMethod( req, res ) }  )
 
 
 	app.get( '/v1/:collection/hash/:hash/:owner_id', (req, res) => {
@@ -626,15 +452,7 @@ module.exports = function(app) {
 		})
 	})
 
-	app.use( '/v1/:collection/hash/:hash/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/hash/:hash/:owner_id', ( req, res ) => { improperMethod( req, res ) }  )
 
 
 	/*
@@ -668,28 +486,9 @@ module.exports = function(app) {
 		})
 	})
 
-	app.use( '/v1/:collection/count/', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
+	app.use( '/v1/:collection/count/', ( req, res ) => { improperMethod( req, res ) }  )
 
-
-	app.use( '/v1/:collection/count/:owner_id', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, req.params.owner_id, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
-	});
-
-
+	app.use( '/v1/:collection/count/:owner_id', ( req, res ) => { improperMethod( req, res ) } )
 
 	app.use(( req, res ) => { // 404 everything else
 		res.setHeader( 'Content-Type', 'application/vnd.api+json' )
@@ -699,4 +498,14 @@ module.exports = function(app) {
 		apiHandler.logRequest( err.code, err.code, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	})
-};
+}
+
+const improperMethod = function( req, res, allow = 'GET' ) {
+	res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
+	res.setHeader( 'Allow', allow )	
+	let apiHandler = req.app.get( 'apiHandler' )
+	let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
+	let err = HandleError( '[API] Improper Method Used', false, 405 )
+	apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
+	res.status(err.code).send(err.msg)
+}
