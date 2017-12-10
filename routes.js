@@ -249,13 +249,7 @@ module.exports = function(app) {
 	})
 
 	app.use( '/v1/hash/:hash', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-		res.setHeader( 'Allow', 'GET' )	
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )	
-		let err = HandleError( '[API] Improper Method Used', false, 405 )
-		apiHandler.logRequest( Constants.read, false, apiKey, err.msg )
-		res.status(err.code).send(err.msg)
+		improperMethod( req, res ) 
 	})
 
 	app.get( '/v1/hash/:hash/:owner_id', (req, res) => {
