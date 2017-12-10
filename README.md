@@ -44,7 +44,7 @@ returns a hash + id
 
 **Update data**
 ```
-Put
+PUT
 body: {collection: [collection], id: [id], data: [JSON-data-content]}
 http(s)://[your-server-here]/v1/update
 returns a hash + id
