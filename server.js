@@ -24,15 +24,15 @@ module.exports.run = function( config ) {
 					return res.redirect(['https://', req.get('Host'), req.url].join(''))
 				}
 				next()
-			});
+			})
 			https.createServer({
 				key: fs.readFileSync( config.SSL_KEY ),
 				cert: fs.readFileSync( config.SSL_CERT )
 			}, app).listen( config.SSL_PORT )
 			http.createServer( (req, res) => {
-				res.writeHead(301, { 'Location': 'https://' + req.headers['host'] + req.url });
-				res.end();
-			}).listen(config.PORT);
+				res.writeHead(301, { 'Location': 'https://' + req.headers['host'] + req.url })
+				res.end()
+			}).listen(config.PORT)
 		} else {
 			app.listen( config.PORT, () => {
 				success.info( '[SUCCESS] Running on port ' + config.PORT + '\n' )

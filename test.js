@@ -1,7 +1,7 @@
 'use strict'
 // Test Config File
 
-const request				 = require('request');
+const request				 = require('request')
 const expect 				 = require('chai').expect
 const it 					 = require('mocha').it
 const describe 				 = require('mocha').describe
@@ -62,7 +62,7 @@ describe( 'HTTP API Tests', function() {
 			expect( err ).to.be.a('null')
 			done()
 		})
-	});
+	})
 
 
 
@@ -442,4 +442,4 @@ describe( 'HTTP API Tests', function() {
 		})
 	}
 
-});
+})
