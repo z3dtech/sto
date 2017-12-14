@@ -4,7 +4,8 @@ const bodyParser     = require('body-parser')
 const helmet 		 = require('helmet')
 const HandleError	 = require('./lib/HandleError')
 const Constants 	 = require('./lib/Consts')
-
+const improperMethod = require('./routes/http/improperMethod')
+const writes	 	 = require('./routes/http/writes/writes')
 
 module.exports = function(app) {
 
@@ -20,18 +21,7 @@ module.exports = function(app) {
 		WRITE DATA
 	*/
 
-	app.post( '/v1/insert', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )		
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization ) 
-		apiHandler.handleInsertCall( apiKey, req.body ).then((data) => {
-			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, false )
-			res.status(201).send( data )
-		}).catch( (err) => {
-			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
-			res.status(err.code).send(err.msg)
-		})
-	})
+	app.post( '/v1/insert', writes.insert)
 
 
 	app.use( '/v1/insert', ( req, res ) => { 
@@ -42,18 +32,7 @@ module.exports = function(app) {
 		UPDATE DATA
 	*/
 
-	app.put( '/v1/update', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )		
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization ) 
-		apiHandler.handleUpdateCall( apiKey, req.body ).then((data) => {
-			apiHandler.logRequest( Constants.write, req.body.id, apiKey, false ) // check data for owner?
-			res.status(200).send( data )
-		}).catch( (err) => {
-			apiHandler.logRequest( Constants.write, req.body.id, apiKey, err.msg )
-			res.status(err.code).send(err.msg)
-		})
-	})
+	app.put( '/v1/update', writes.update )
 
 
 	app.use( '/v1/update', ( req, res ) => {  
@@ -64,18 +43,7 @@ module.exports = function(app) {
 		DELETE DATA 
 	*/
 
-	app.delete( '/v1/delete/', (req, res) => {
-		res.setHeader( 'Content-Type', 'application/vnd.api+json' )		
-		let apiHandler = req.app.get( 'apiHandler' )
-		let apiKey = apiHandler.parseApiKey( req.headers.authorization )
-		apiHandler.handleDeleteCall( apiKey, req.body ).then((data) => {
-			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, false )
-			res.send( data )
-		}).catch( (err) => {
-			apiHandler.logRequest( Constants.write, req.body.owner, apiKey, err.msg )
-			res.status(err.code).send(err.msg)
-		})
-	})
+	app.delete( '/v1/delete/', writes.delete )
 
 	app.use( '/v1/delete/', ( req, res ) => { 
 		improperMethod( req, res, 'DELETE' ) 	
@@ -542,22 +510,4 @@ module.exports = function(app) {
 		apiHandler.logRequest( err.code, err.code, apiKey, err.msg )
 		res.status(err.code).send(err.msg)
 	})
-}
-
-const improperMethod = function( req, res, allow = 'GET' ) {
-	res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
-	res.setHeader( 'Allow', allow )	
-	let apiHandler = req.app.get( 'apiHandler' )
-	let apiKey = apiHandler.parseApiKey( req.headers.authorization )
-	let owner = false
-	let requestType = Constants.read
-	if( typeof req.params.owner_id !== 'undefined' ) {
-		owner = req.params.owner_id
-	}	
-	if( allow !== 'GET' ) {
-		requestType = Constants.write
-	}
-	let err = HandleError( '[API] Improper Method Used', false, 405 )
-	apiHandler.logRequest( requestType, owner, apiKey, err.msg )
-	res.status(err.code).send(err.msg)
 }
