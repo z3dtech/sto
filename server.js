@@ -8,7 +8,8 @@ const log4js 		 = require('log4js')
 const app			 = express()
 const HandleApi      = require( './lib/HandleApi' ) 
 const HandleConfig 	 = require('./lib/HandleConfig')
-require( './routes' )(app)
+const router 		 = require( './routes' )(app)
+const error404 		 = require('./routes/http/404')
 	
 const success 		 = log4js.getLogger('success')
 
@@ -17,7 +18,11 @@ module.exports.run = function( config ) {
 	let handleConfig = new HandleConfig()
 	if( handleConfig.errorCheckConfig( config ) ) {
 		let apiHandler = new HandleApi( config )
-		app.set( 'apiHandler', apiHandler )
+		app.set( 'apiHandler', apiHandler )	
+		app.use( "/v1/", router )
+		app.use( "/", (req, res) => {
+			error404( req, res )
+		})
 		if( config.SSL_ENABLED === true ) {
 			app.use(function(req, res, next) {
 				if(!req.secure) {
