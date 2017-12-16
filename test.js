@@ -64,8 +64,6 @@ describe( 'HTTP API Tests', function() {
 		})
 	})
 
-
-
 	it('Count should be 1', function(done) {
 		let uri = protocol + '://localhost:' + port + '/v1/' + testCollection + '/count/' + testOwner 
 		request({
@@ -119,8 +117,8 @@ describe( 'HTTP API Tests', function() {
 				json: true
 			}, (err,res) => {
 				expect( err ).to.be.a('null')
-				expect( res.statusCode ).to.equal(200)
 				let lastBody = res.body
+				expect( res.statusCode ).to.equal(200)
 				expect( lastBody.data.hashData ).to.equal(hash)
 				expect( parseFloat( lastBody.data.content.rand ) ).to.equal( data.rand )
 				done()
