@@ -1,5 +1,4 @@
 'use strict'
-// Test Config File
 
 const request				 = require('request')
 const expect 				 = require('chai').expect
@@ -405,8 +404,6 @@ describe( 'HTTP API Tests', function() {
 				done()
 			})		
 	})
-	
-	// clearLogs for testKey?
 
 	const insertRandom = function( rand = false ) {
 		if( !rand ) {
@@ -434,7 +431,7 @@ describe( 'HTTP API Tests', function() {
 					expect( res.statusCode ).to.equal(201)
 					let body = res.body
 					expect( body.data.inserted.hashData ).to.be.a('string')
-					//expect( body.data.inserted.id ).to.be.a('string')
+					expect( body.data.inserted.id ).to.be.a('string')
 					resolve(body)
 				})
 		})
