@@ -149,7 +149,6 @@ Build more standardized clients+wrappers<br />
 **Key Feature Priorities**
 * Improve build process
 * Typescript port + improved architecture
-* Restructure routes file
 * Interface class for handleCache and handleDB to support redis/sequelize
 * Considering adding an /upload path for encoded/form-data
 
