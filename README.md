@@ -147,23 +147,23 @@ Build more standardized clients+wrappers<br />
 
 
 **Key Feature Priorities**
-* Improve build process
-* Typescript port + improved architecture
-* Interface class for handleCache and handleDB to support redis/sequelize
-* Considering adding an /upload path for encoded/form-data
-
+* WS web sockets
+* Managed API Keys in storage
+* Improved build process
+* Typescript port
+* Interface class for 
+	- handleCache -> Redis
+	- handleDB -> sequelize (postgres + mysql), aurora, dynamo
+* Adding an /upload path for encoded/form-data
 
 **Planned Integrations**									
-* greenlock-express automated SSL certification with letsencrypt		
 * AWS Lambda / Zapier callbacks							
 * Redis for extended cache
 * DataLoader for batched requests						
-* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)
-* GraphQL Hookup?
-* express-ws for sockets										
-* Mosca for MQTT										
+* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)								* Mosca for MQTT					
+* Gulp Grunt Webpack builds
+* Docker File					
 * Travis CI / Automated Build Checks
-* Gulp Grunt Docker builds
 
 # License
 
