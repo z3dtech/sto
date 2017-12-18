@@ -143,7 +143,7 @@ describe( 'HTTP API Tests', function() {
 	})
 
 
-	it('Handle 5 sto write calls in <2seconds', function(done) {
+	it('Handle 5 sto write calls in <1seconds', function(done) {
 		Promise.all([insertRandom(),insertRandom(),insertRandom(),insertRandom()]).then((suc) => {
 			expect( suc.length ).to.equal(4)
 			return insertRandom()
@@ -155,7 +155,7 @@ describe( 'HTTP API Tests', function() {
 			expect( false ).to.be(true)
 			done()
 		})
-	})
+	}).timeout(1000)
 
 	it('Pagination works as expected', function(done) {
 		let uri = protocol+'://localhost:' + port + '/v1/' + testCollection + '/last/' + testOwner + '/4/page/1'
@@ -209,7 +209,7 @@ describe( 'HTTP API Tests', function() {
 			})		
 	})
 
-	it('Delete by owner works as expected [includes half second delay]', function(done) {
+	it('Delete by owner works as expected', function(done) {
 		let deleteOwner = { collection: testCollection, owner: testOwner, skip: 2 }
 		let uri = protocol+'://localhost:' + port + '/v1/delete'
 		request.delete({
@@ -225,9 +225,7 @@ describe( 'HTTP API Tests', function() {
 			let lastBody = res.body
 			expect( lastBody.data.deleted.indexOf( hash ) ).to.not.equal(-1)
 			expect( lastBody.data.deleted.indexOf( hash2 ) ).to.equal(-1)
-			setTimeout( function() {
-				done()
-			}, 500 ) // sometimes takes a second
+			done()
 		})
 	})
 

@@ -9,7 +9,6 @@ Basically if you don't want to build a custom database integration or set up a s
 # How to Install
 
 ```
-npm init
 npm install -g sto
 sto setup
 ```
