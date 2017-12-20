@@ -21,7 +21,7 @@ module.exports.run = function( config ) {
 		app.set( 'apiHandler', apiHandler )	
 		app.use( "/v1/", router )
 		app.use( "/", (req, res) => {
-			error404( req, res )
+			error404.error404( req, res )
 		})
 		if( config.SSL_ENABLED === true ) {
 			app.use(function(req, res, next) {

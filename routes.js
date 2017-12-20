@@ -22,11 +22,11 @@ module.exports = function(app) {
 	
 
 	router.get( '/validateKey', (req, res) => {
-		validateKey( req, res )
+		validateKey.validate( req, res )
 	})
 
 	router.use( '/validateKey', ( req, res ) => { 
-		improperMethod( req, res ) 	
+		improperMethod.error405( req, res ) 	
 	})
 
 
@@ -39,7 +39,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/insert', ( req, res ) => { 
-		improperMethod( req, res, 'POST' ) 	
+		improperMethod.error405( req, res, 'POST' ) 	
 	})
 
 	router.put( '/update', ( req, res ) => { 
@@ -47,14 +47,14 @@ module.exports = function(app) {
 	})
 
 	router.use( '/update', ( req, res ) => {  
-		improperMethod( req, res, 'PUT' ) 	
+		improperMethod.error405( req, res, 'PUT' ) 	
 	})
 
 	router.delete( '/delete/', ( req, res ) => { 
 		writes.delete( req, res ) 	
 	})
 	router.use( '/delete/', ( req, res ) => { 
-		improperMethod( req, res, 'DELETE' ) 	
+		improperMethod.error405( req, res, 'DELETE' ) 	
 	})
 	
 
@@ -67,7 +67,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/id/:_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/:collection/id/:_id', (req, res) => {
@@ -75,7 +75,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/:collection/id/:_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	// count
@@ -97,19 +97,19 @@ module.exports = function(app) {
 	})
 
 	router.use( '/count/', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/count/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/count/', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/count/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	// hash | hashData
@@ -119,7 +119,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/hash/:hash', (req, res) => {
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/hash/:hash/:owner_id', (req, res) => {
@@ -127,7 +127,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/hash/:hash/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/:collection/hash/:hash', (req, res) => {
@@ -135,7 +135,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/:collection/hash/:hash', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/:collection/hash/:hash/:owner_id', (req, res) => {
@@ -143,7 +143,7 @@ module.exports = function(app) {
 	})
 
 	router.use( '/:collection/hash/:hash/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	// last | newest | most recent
@@ -161,15 +161,15 @@ module.exports = function(app) {
 	})
 
 	router.use( '/last/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/last/:owner_id/:limit', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/last/:owner_id/:limit/page/:page', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/:collection/last/:owner_id', (req, res) => {
@@ -185,15 +185,15 @@ module.exports = function(app) {
 	})
 	
 	router.use( '/:collection/last/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/last/:owner_id/:limit', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/last/:owner_id/:limit/page/:page', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 	
 	// first | oldest
@@ -211,15 +211,15 @@ module.exports = function(app) {
 	})
 
 	router.use( '/first/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/first/:owner_id/:limit', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/first/:owner_id/:limit/page/:page', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/:collection/first/:owner_id', (req, res) => {
@@ -235,21 +235,21 @@ module.exports = function(app) {
 	})
 	
 	router.use( '/:collection/first/:owner_id', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/first/:owner_id/:limit', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/first/:owner_id/:limit/page/:page', ( req, res ) => { 
-		improperMethod( req, res ) 
+		improperMethod.error405( req, res ) 
 	})
 
 	// 404 everything else 
 	
 	router.use(( req, res ) => { 
-		error404( req, res )
+		error404.error404( req, res )
 	})
 
 	return router
