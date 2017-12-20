@@ -3,7 +3,7 @@
 const Constants 	 = require('./../../lib/Consts')
 const HandleError	 = require('./../../lib/HandleError')
 
-module.export = function( req, res, allow = 'GET' ) {
+exports.error405 = function( req, res, allow = 'GET' ) {
 	res.setHeader( 'Content-Type', 'application/vnd.api+json' )	
 	res.setHeader( 'Allow', allow )	
 	let apiHandler = req.app.get( 'apiHandler' )

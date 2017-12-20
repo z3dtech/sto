@@ -1,6 +1,6 @@
 'use strict'
 
-module.export = function( req, res ) {
+exports.validate = function( req, res ) {
 	let apiHandler = req.app.get( 'apiHandler' )
 	let apiKey = apiHandler.parseApiKey( req.headers.authorization ) 
 	apiHandler.handleKeyValidation( apiKey ).then((data) => {
