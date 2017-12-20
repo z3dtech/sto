@@ -9,6 +9,7 @@
   "SSL_PORT": 443, // port to connect to for https
   "API_AUTH_ENABLED": true, // are api keys required?
   "LIMITS_ENABLED": true, // should api limits be enforced? 
+  "CORS_ENABLED": false, // allow cross domain requests from clientside?
   "API_AUTH_KEYS": {
                     "testkey": {  // testkey is an api key
                                   "READ": true, //key can read 

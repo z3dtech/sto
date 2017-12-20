@@ -19,6 +19,13 @@ module.exports.run = function( config ) {
 	if( handleConfig.errorCheckConfig( config ) ) {
 		let apiHandler = new HandleApi( config )
 		app.set( 'apiHandler', apiHandler )	
+		if( apiHandler.config.CORS_ENABLED === true ) {
+			app.use(function(req, res, next) {
+				res.header("Access-Control-Allow-Origin", "*")
+				res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+				next()
+			})
+		}
 		app.use( "/v1/", router )
 		app.use( "/", (req, res) => {
 			error404( req, res )
