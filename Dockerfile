@@ -1,9 +1,9 @@
 FROM node:latest
 
-ADD config.json /tmp/config.json
-RUN ls /tmp
+RUN mkdir /home/sto
+ADD config.json /home/sto/config.json
 RUN npm install -g sto
-RUN cd /tmp; sto
+RUN cd /home/sto; sto
 
 EXPOSE 443
 
