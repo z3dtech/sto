@@ -5,8 +5,8 @@ const helmet 		 = require('helmet')
 const express 		 = require('express')
 const router 		 = express.Router()
 
-const reads 		 = require('./routes/ws/reads-ws')
-const writes	 	 = require('./routes/ws/writes-ws')
+const reads 		 = require('./routes/ws/reads')
+const writes	 	 = require('./routes/ws/writes')
 
 module.exports = function(app) {
 
