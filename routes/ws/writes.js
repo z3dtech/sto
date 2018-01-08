@@ -10,7 +10,7 @@ exports.insert = ( ws, req, msg ) => {
 		ws.status(201).send( data )
 	}).catch( (err) => {
 		apiHandler.logRequest( Constants.write, msg.owner, apiKey, err.msg )
-		ws.status(err.code).send(err.msg)
+		ws.send(err.msg)
 	})
 }
 	
@@ -22,7 +22,7 @@ exports.update = ( ws, req, msg ) => {
 		ws.send( data )
 	}).catch( (err) => {
 		apiHandler.logRequest( Constants.write, msg.owner, apiKey, err.msg )
-		ws.status(err.code).send(err.msg)
+		ws.send(err.msg)
 	})
 }
 
@@ -34,7 +34,7 @@ exports.delete = ( ws, req, msg ) => {
 		ws.send( data )
 	}).catch( (err) => {
 		apiHandler.logRequest( Constants.write, msg.owner, apiKey, err.msg )
-		ws.status(err.code).send(err.msg)
+		ws.send(err.msg)
 	})
 }
 
