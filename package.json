@@ -7,7 +7,7 @@
     "test": "npm run unit && npm run lint",
     "lint": "./node_modules/.bin/eslint **/*.js && eslint ./*.js && eslint routes/http/*.js",
     "unit": "./node_modules/.bin/mocha --reporter spec",
-    "build": "webpack -p",
+    "build": "webpack -p && cp ./config.json dist/",
     "watch": "webpack --watch"
   },
   "repository": {
@@ -27,6 +27,7 @@
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "cors": "^2.8.4",
+    "eslint": "^4.15.0",
     "express": "^4.16.2",
     "express-ws": "^3.0.0",
     "hat": "0.0.3",

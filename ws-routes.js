@@ -2,8 +2,6 @@
 
 const bodyParser     = require('body-parser')
 const helmet 		 = require('helmet')
-const express 		 = require('express')
-const router 		 = express.Router()
 
 const reads 		 = require('./routes/ws/reads')
 const writes	 	 = require('./routes/ws/writes')

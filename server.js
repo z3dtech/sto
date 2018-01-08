@@ -2,7 +2,7 @@
 
 const express		 = require('express')
 const app			 = express()
-const expressWs 	 = require('express-ws')(app, undefined, {leaveRouterUntouched: true});
+const expressWs 	 = require('express-ws')(app, null, {leaveRouterUntouched: true});
 const https 		 = require('https')
 const http 			 = require('http')
 const fs 			 = require('fs')
@@ -13,7 +13,6 @@ const HandleConfig 	 = require('./lib/HandleConfig')
 const router 		 = require( './routes' )(app)
 const routerWs	 	 = require( './ws-routes' )
 const error404 		 = require('./routes/http/404')
-	
 const success 		 = log4js.getLogger('success')
 
 
@@ -53,6 +52,5 @@ module.exports.run = function( config ) {
 				success.info( '[SUCCESS] Running on port ' + config.PORT + '\n' )
 			})
 		}
-	}
-			
+	} 		
 }
