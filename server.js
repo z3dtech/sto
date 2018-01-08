@@ -1,13 +1,13 @@
 'use strict'
 
 const express		 = require('express')
+const app			 = express()
 const expressWs 	 = require('express-ws')(app, undefined, {leaveRouterUntouched: true});
 const https 		 = require('https')
 const http 			 = require('http')
 const fs 			 = require('fs')
 const log4js 		 = require('log4js')
 const cors 			 = require('cors')
-const app			 = express()
 const HandleApi      = require( './lib/HandleApi' ) 
 const HandleConfig 	 = require('./lib/HandleConfig')
 const router 		 = require( './routes' )(app)

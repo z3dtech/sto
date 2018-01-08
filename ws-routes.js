@@ -5,8 +5,8 @@ const helmet 		 = require('helmet')
 const express 		 = require('express')
 const router 		 = express.Router()
 
-const reads 		 = require('./routes/http/reads-ws')
-const writes	 	 = require('./routes/http/writes-ws')
+const reads 		 = require('./routes/ws/reads-ws')
+const writes	 	 = require('./routes/ws/writes-ws')
 
 module.exports = function(app) {
 
@@ -29,14 +29,14 @@ module.exports = function(app) {
 	app.ws( '/update', ( ws, req ) => { 
 		ws.on('message', (msg) => {
 			writes.update( ws, req, msg ) 
-		}
+		})
 	})
 
 	
 	app.ws( '/delete/', ( ws, req ) => { 
 		ws.on('message', (msg) => {
 			writes.delete( ws, req, msg ) 
-		}
+		})
 	})
 		
 	
