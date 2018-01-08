@@ -1,15 +1,17 @@
 'use strict'
 
 const express		 = require('express')
+const app			 = express()
+const expressWs 	 = require('express-ws')(app, undefined, {leaveRouterUntouched: true});
 const https 		 = require('https')
 const http 			 = require('http')
 const fs 			 = require('fs')
 const log4js 		 = require('log4js')
-const cors 		= require('cors')
-const app			 = express()
+const cors 			 = require('cors')
 const HandleApi      = require( './lib/HandleApi' ) 
 const HandleConfig 	 = require('./lib/HandleConfig')
 const router 		 = require( './routes' )(app)
+const routerWs	 	 = require( './ws-routes' )
 const error404 		 = require('./routes/http/404')
 	
 const success 		 = log4js.getLogger('success')
@@ -27,6 +29,10 @@ module.exports.run = function( config ) {
 		app.use( "/", (req, res) => {
 			error404.error404( req, res )
 		})
+		if( config.WS_ENABLED === true ) {
+			expressWs.applyTo( router )
+			routerWs( app, apiHandler )
+		}
 		if( config.SSL_ENABLED === true ) {
 			app.use(function(req, res, next) {
 				if(!req.secure) {

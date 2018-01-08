@@ -38,21 +38,23 @@ module.exports = function(app) {
 		writes.insert( req, res ) 	
 	})
 
-	router.use( '/insert', ( req, res ) => { 
-		improperMethod.error405( req, res, 'POST' ) 	
-	})
 
 	router.put( '/update', ( req, res ) => { 
 		writes.update( req, res ) 	
 	})
 
+	router.delete( '/delete/', ( req, res ) => { 
+		writes.delete( req, res ) 	
+	})
+
+	router.use( '/insert', ( req, res ) => { 
+		improperMethod.error405( req, res, 'POST' ) 	
+	})
+	
 	router.use( '/update', ( req, res ) => {  
 		improperMethod.error405( req, res, 'PUT' ) 	
 	})
 
-	router.delete( '/delete/', ( req, res ) => { 
-		writes.delete( req, res ) 	
-	})
 	router.use( '/delete/', ( req, res ) => { 
 		improperMethod.error405( req, res, 'DELETE' ) 	
 	})
@@ -66,12 +68,12 @@ module.exports = function(app) {
 		reads.readId( req, res ) 
 	})
 
-	router.use( '/id/:_id', ( req, res ) => { 
-		improperMethod.error405( req, res ) 
-	})
-
 	router.get( '/:collection/id/:_id', (req, res) => {
 		reads.readId( req, res )
+	})
+
+	router.use( '/id/:_id', ( req, res ) => { 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/id/:_id', ( req, res ) => { 
@@ -118,28 +120,28 @@ module.exports = function(app) {
 		reads.readHash( req, res )
 	})
 
-	router.use( '/hash/:hash', (req, res) => {
-		improperMethod.error405( req, res ) 
-	})
-
 	router.get( '/hash/:hash/:owner_id', (req, res) => {
 		reads.readHash( req, res )
-	})
-
-	router.use( '/hash/:hash/:owner_id', ( req, res ) => { 
-		improperMethod.error405( req, res ) 
 	})
 
 	router.get( '/:collection/hash/:hash', (req, res) => {
 		reads.readHash( req, res )
 	})
 
-	router.use( '/:collection/hash/:hash', ( req, res ) => { 
+	router.get( '/:collection/hash/:hash/:owner_id', (req, res) => {
+		reads.readHash( req, res )
+	})
+
+	router.use( '/hash/:hash', (req, res) => {
 		improperMethod.error405( req, res ) 
 	})
 
-	router.get( '/:collection/hash/:hash/:owner_id', (req, res) => {
-		reads.readHash( req, res )
+	router.use( '/hash/:hash/:owner_id', ( req, res ) => { 
+		improperMethod.error405( req, res ) 
+	})
+
+	router.use( '/:collection/hash/:hash', ( req, res ) => { 
+		improperMethod.error405( req, res ) 
 	})
 
 	router.use( '/:collection/hash/:hash/:owner_id', ( req, res ) => { 
@@ -171,6 +173,8 @@ module.exports = function(app) {
 	router.use( '/last/:owner_id/:limit/page/:page', ( req, res ) => { 
 		improperMethod.error405( req, res ) 
 	})
+
+	// -- Additional Collections
 
 	router.get( '/:collection/last/:owner_id', (req, res) => {
 		reads.readOwner( req, res )
@@ -221,6 +225,10 @@ module.exports = function(app) {
 	router.use( '/first/:owner_id/:limit/page/:page', ( req, res ) => { 
 		improperMethod.error405( req, res ) 
 	})
+
+
+	// -- Custom Collections
+
 
 	router.get( '/:collection/first/:owner_id', (req, res) => {
 		reads.readOwner( req, res, 1 )

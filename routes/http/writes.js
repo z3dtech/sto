@@ -2,7 +2,7 @@
 
 const Constants 	 = require('./../../lib/Consts')
 
-exports.insert = (req, res) => {
+exports.insert = ( req, res ) => {
 	res.setHeader( 'Content-Type', 'application/vnd.api+json' )		
 	let apiHandler = req.app.get( 'apiHandler' )
 	let apiKey = apiHandler.parseApiKey( req.headers.authorization )
@@ -15,7 +15,7 @@ exports.insert = (req, res) => {
 	})
 }
 	
-exports.update = (req, res) => {
+exports.update = ( req, res ) => {
 	res.setHeader( 'Content-Type', 'application/vnd.api+json' )		
 	let apiHandler = req.app.get( 'apiHandler' )
 	let apiKey = apiHandler.parseApiKey( req.headers.authorization )
@@ -28,7 +28,7 @@ exports.update = (req, res) => {
 	})
 }
 
-exports.delete = (req, res) => {
+exports.delete = ( req, res ) => {
 	res.setHeader( 'Content-Type', 'application/vnd.api+json' )		
 	let apiHandler = req.app.get( 'apiHandler' )
 	let apiKey = apiHandler.parseApiKey( req.headers.authorization )
