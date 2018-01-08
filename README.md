@@ -1,5 +1,5 @@
 # sto
-Generic fully RESTful CRUD API for quickly saving and fetching data objects. JSON-API Compliant. Mongo integrated. Node-cache for cache. Express. Ideal for quick, simple, seemless saving and fetching.
+Generic fully RESTful CRUD API for quickly saving and fetching data objects. JSON-API Compliant. Mongo integrated. Node-cache for cache. Express and express-ws. Ideal for quick, simple, seemless saving and fetching.
 <br /><br />
 
 The purpose of sto is to create a generalized API that can seemlessly log and return JSON data objects. Whether you want somewhere to store and retreive the state of your Javascript app, the data of your IoT device, or the user status of your mobile game, sto provides you with an easy to setup solution. 
@@ -146,7 +146,6 @@ Build more standardized clients+wrappers<br />
 
 
 **Key Feature Priorities**
-* WS web sockets
 * Managed API Keys in storage
 * Improved build process
 * Typescript port
