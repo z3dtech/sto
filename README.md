@@ -153,8 +153,7 @@ Build more standardized clients+wrappers<br />
 * AWS Lambda / Zapier callbacks							
 * Redis for extended cache
 * DataLoader for batched requests						
-* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)								* Mosca for MQTT					
-* Gulp Grunt Webpack builds
+* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)								* Mosca for MQTT		
 * Docker File					
 * Travis CI / Automated Build Checks
 
