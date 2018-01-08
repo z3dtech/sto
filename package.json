@@ -8,7 +8,7 @@
     "lint": "./node_modules/.bin/eslint **/*.js && eslint ./*.js && eslint routes/http/*.js",
     "unit": "./node_modules/.bin/mocha --reporter spec",
     "build": "webpack -p",
-    "watch": "webpack --watch"  
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
