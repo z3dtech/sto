@@ -13,7 +13,7 @@ npm install -g sto
 sto setup
 ```
 
-Note: `sto setup` will build a config.json file which you can edit directly. <br />More details on what you can do with it are provided in example.config.json in this repo. Do not edit the example.config.json.
+Note: `sto setup` will build a config.json file which you can edit directly. <br />More details on what you can do with it are provided in example.config.json in this repo.
 <br /><br />
 To run 
 ```
