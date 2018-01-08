@@ -6,7 +6,9 @@
   "scripts": {
     "test": "npm run unit && npm run lint",
     "lint": "./node_modules/.bin/eslint **/*.js && eslint ./*.js && eslint routes/http/*.js",
-    "unit": "./node_modules/.bin/mocha --reporter spec"
+    "unit": "./node_modules/.bin/mocha --reporter spec",
+    "build": "webpack -p",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -40,5 +42,8 @@
     "object-sizeof": "^1.2.0",
     "request": "^2.83.0",
     "yargs": "^9.0.1"
+  },
+  "devDependencies": {
+    "webpack": "^3.10.0"
   }
 }
