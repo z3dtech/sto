@@ -19,11 +19,6 @@ To run
 ```
 sto 
 ```
-To run in perpetuity -- (incorporate `nohup` or `forever start` per your preference). A proper build process is in the works.
-
-```
-sto & > output.log
-```
 
 (**NOTE**: logs will still be populated in the ./logs/ directory for warnings and errors. In future versions this will be adjustable in the config.)
 <br />
