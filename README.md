@@ -151,9 +151,9 @@ Build more standardized clients+wrappers<br />
 
 **Planned Integrations**									
 * AWS Lambda / Zapier callbacks							
-* Redis for extended cache
 * DataLoader for batched requests						
-* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)								* Mosca for MQTT		
+* Sequelize or PostLoader for relational dbs (PostGres, MySQl, etc.)							
+* Mosca for MQTT		
 * Docker File					
 * Travis CI / Automated Build Checks
 
